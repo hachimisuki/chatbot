@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, forwardRef } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 const DynamicReactRenderer = dynamic(() => import("./DynamicReactRenderer"), {
   ssr: false,
 });
@@ -10,7 +10,7 @@ const ChatArea = forwardRef(({ messages, streamingContent }, ref) => {
   return (
     <div
       ref={ref}
-      className={`relative overflow-y-auto  bg-gray-50 w-[55%] mx-auto [scrollbar-width:none] [-ms-overflow-style:none] ${dynamicClass}`}
+      className={`relative overflow-y-auto py-6 bg-gray-50 w-[55%] mx-auto [scrollbar-width:none] [-ms-overflow-style:none] ${dynamicClass}`}
     >
       {messages.length === 0 ? (
         <div>
@@ -18,7 +18,7 @@ const ChatArea = forwardRef(({ messages, streamingContent }, ref) => {
             <motion.div
               animate={{
                 rotate: 720,
-                transition: { duration: 2, ease: "linear" },
+                transition: { duration: 1.5, ease: "linear" },
               }}
               whileHover={{
                 scale: 1.2,
