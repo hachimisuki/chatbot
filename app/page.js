@@ -125,15 +125,10 @@ export default function Home() {
     }
   };
 
-  const addReactFlag = (renderResult) => {
-    messages[messages.length - 1].reactFlag = renderResult;
-  };
-
   return (
     <div className="w-full h-screen flex flex-col bg-background">
       <Header />
       <ChatArea
-        addReactFlag={addReactFlag}
         messages={messages}
         streamingContent={streamingContent}
         ref={chatAreaRef}

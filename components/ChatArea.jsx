@@ -4,23 +4,7 @@ const DynamicReactRenderer = dynamic(() => import("./DynamicReactRenderer"), {
   ssr: false,
 });
 const ChatArea = forwardRef(
-  ({ messages, streamingContent, className, addReactFlag }, ref) => {
-    const [reactResponse, setReactResponse] = useState(null);
-
-    // 检测消息是否包含 React 代码并尝试渲染
-    useEffect(() => {
-      if (messages.length > 0) {
-        const lastMessage = messages[messages.length - 1];
-        if (
-          lastMessage.role === "assistant" &&
-          lastMessage.content.includes("import React")
-        ) {
-          setReactResponse(lastMessage.content);
-          addReactFlag(true);
-        }
-      }
-    }, [messages]);
-
+  ({ messages, streamingContent, className }, ref) => {
     return (
       <div ref={ref} className={className}>
         {messages.map((msg, index) => (
@@ -34,7 +18,7 @@ const ChatArea = forwardRef(
           >
             <strong>{msg.role === "user" ? "You" : "Assistant"}:</strong>
             <div className="whitespace-pre-wrap">{msg.content}</div>
-            {msg.reactFlag ? <DynamicReactRenderer code={msg.content} /> : null}
+            <DynamicReactRenderer code={msg.content} />
           </div>
         ))}
         {/* 显示流式内容 */}

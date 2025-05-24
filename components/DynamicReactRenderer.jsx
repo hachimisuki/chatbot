@@ -5,9 +5,10 @@ import { extractAndProcessJSX } from "@/lib/utils";
 export default function DynamicReactRenderer({ code }) {
   // 提取有效的组件代码
   const validCode = extractAndProcessJSX(code);
-  const testcode = `<strong>Hello World!</strong>
-`;
-  console.log("Valid Code:", validCode);
+  if (!validCode) return null;
+  //   const testcode = `<strong>Hello World!</strong>
+  // `;
+  // console.log("Valid Code:", validCode);
 
   return (
     <div className="mt-4 p-3 border border-gray-300 rounded-lg bg-white">
