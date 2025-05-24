@@ -20,7 +20,7 @@ export function ChatInput({ onSend, onClear, disabled }) {
   };
 
   return (
-    <div className="w-[55%] mx-auto px-4 py-6">
+    <div className="w-[55%] mx-auto px-6 py-6">
       <div className="relative flex bg-[f3f4f6] items-center gap-3 border border-input rounded-xl shadow-sm p-3 focus-within:ring-1 focus-within:ring-slate-400 focus-within:ring-offset-1">
         <textarea
           value={inputValue}

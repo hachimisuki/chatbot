@@ -48,7 +48,9 @@ export default function Home() {
   // 滚动到最新消息
   useEffect(() => {
     if (chatAreaRef.current) {
-      chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+      setTimeout(() => {
+        chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+      }, 500);
     }
   }, [messages, streamingContent]);
 
