@@ -17,8 +17,8 @@ const ChatArea = forwardRef(({ messages, streamingContent }, ref) => {
           <div className="  absolute bottom-4 text-center w-full text-2xl flex items-center justify-center gap-4">
             <motion.div
               animate={{
-                rotate: 720,
-                transition: { duration: 1.5, ease: "linear" },
+                rotate: 360,
+                transition: { duration: 1, ease: "linear" },
                 scale: 1,
               }}
               whileHover={{
