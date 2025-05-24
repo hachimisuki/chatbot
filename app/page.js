@@ -1,5 +1,5 @@
 "use client";
-
+import { Analytics } from "@vercel/analytics/next";
 import React, { useState, useEffect, useRef } from "react";
 import { Header } from "../components/Header";
 import { ChatInput } from "../components/ChatInput";
@@ -182,6 +182,8 @@ export default function Home() {
 
   return (
     <div className="w-full h-screen flex flex-col bg-background">
+      <Analytics></Analytics>
+
       <Header
         baseUrl={baseUrl}
         apiKey={apiKey}

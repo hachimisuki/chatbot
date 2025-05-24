@@ -19,6 +19,7 @@ const ChatArea = forwardRef(({ messages, streamingContent }, ref) => {
               animate={{
                 rotate: 720,
                 transition: { duration: 1.5, ease: "linear" },
+                scale: 1,
               }}
               whileHover={{
                 scale: 1.2,
