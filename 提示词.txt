@@ -1,0 +1,193 @@
+用JavaScript写一个函数正则提取JSX字符串并返回，不需要import export语句
+在最后加上render组件的语句
+如果遇到react的hooks,在前面加上React. 例如useState，替换为React.useState 
+以下为测试用例
+输入案例如下
+Assistant:
+```jsx
+import React from 'react';
+
+const Square = () => {
+  return (
+    <div style={{ width: '100px', height: '100px', backgroundColor: 'red' }}></div>
+  );
+};
+
+export default Square;
+```
+输出要求
+const Square = () => {
+  return (
+    <div style={{ width: '100px', height: '100px', backgroundColor: 'red' }}></div>
+  );
+};
+render(<Square />)
+
+输入要求
+Assistant:
+```jsx
+import React, { useState } from 'react';
+
+const Square = () => {
+  const [color, setColor] = useState('red');
+
+  const changeColor = () => {
+    const newColor = color === 'red' ? 'blue' : 'red';
+    setColor(newColor);
+  };
+
+  const squareStyle = {
+    width: '100px',
+    height: '100px',
+    backgroundColor: color
+  };
+
+  return (
+    <div>
+      <div style={squareStyle}></div>
+      <button onClick={changeColor}>Change Color</button>
+    </div>
+  );
+};
+
+export default Square;
+```
+输出要求
+const Square = () => {
+  const [color, setColor] = React.useState('red');
+
+  const changeColor = () => {
+    const newColor = color === 'red' ? 'blue' : 'red';
+    setColor(newColor);
+  };
+
+  const squareStyle = {
+    width: '100px',
+    height: '100px',
+    backgroundColor: color
+  };
+
+  return (
+    <div>
+      <div style={squareStyle}></div>
+      <button onClick={changeColor}>Change Color</button>
+    </div>
+  );
+};
+
+
+render(<Square />)
+
+
+
+输入要求
+Assistant:
+```javascript
+import React from 'react';
+
+const Shape = () => {
+  const squareStyle = {
+    width: '100px',
+    height: '100px',
+    backgroundColor: 'red',
+    borderRadius: '0'
+  };
+
+  const circleStyle = {
+    width: '100px',
+    height: '100px',
+    backgroundColor: 'blue',
+    borderRadius: '50%'
+  };
+
+  return (
+    <div>
+      <div style={squareStyle}></div>
+      <div style={circleStyle}></div>
+    </div>
+  );
+};
+
+export default Shape;
+```
+输出要求
+const Shape = () => {
+  const squareStyle = {
+    width: '100px',
+    height: '100px',
+    backgroundColor: 'red',
+    borderRadius: '0'
+  };
+
+  const circleStyle = {
+    width: '100px',
+    height: '100px',
+    backgroundColor: 'blue',
+    borderRadius: '50%'
+  };
+
+  return (
+    <div>
+      <div style={squareStyle}></div>
+      <div style={circleStyle}></div>
+    </div>
+  );
+};
+
+render(<Shape />)
+
+
+
+
+
+输入要求
+```jsx
+import React, { useState } from 'react';
+
+const InteractivePage = () => {
+  const [count, setCount] = useState(0);
+
+  const handleIncrement = () => {
+    setCount(count + 1);
+  };
+
+  const handleDecrement = () => {
+    setCount(count - 1);
+  };
+
+  return (
+    <div>
+      <h1>Interactive Page</h1>
+      <p>Count: {count}</p>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleDecrement}>Decrement</button>
+    </div>
+  );
+};
+
+export default InteractivePage;
+```
+输出要求
+const InteractivePage = () => {
+  const [count, setCount] = React.useState(0);
+
+  const handleIncrement = () => {
+    React.setCount(count + 1);
+  };
+
+  const handleDecrement = () => {
+    setCount(count - 1);
+  };
+
+  return (
+    <div>
+      <h1>Interactive Page</h1>
+      <p>Count: {count}</p>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleDecrement}>Decrement</button>
+    </div>
+  );
+};
+
+
+render(<InteractivePage  />)
