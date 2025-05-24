@@ -31,6 +31,7 @@ export function ConfigModal() {
               id="baseURL"
               defaultValue="https://api.chatanywhere.org"
               className="col-span-3"
+              autoFocus
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -43,7 +44,6 @@ export function ConfigModal() {
               className="col-span-3"
             />
           </div>
-
         </div>
         <DialogFooter>
           <Button type="submit">保存</Button>

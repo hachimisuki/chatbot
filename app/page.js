@@ -132,7 +132,6 @@ export default function Home() {
         messages={messages}
         streamingContent={streamingContent}
         ref={chatAreaRef}
-        className="flex-1 overflow-y-auto p-4 bg-gray-50"
       />
       <ChatInput onSend={handleSendMessage} disabled={isLoading} />
     </div>

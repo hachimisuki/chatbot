@@ -19,14 +19,14 @@ export function ChatInput({ onSend, disabled }) {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-6">
-      <div className="relative flex items-center gap-3 bg-background border border-input rounded-lg shadow-sm p-3 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+    <div className="w-[55%] mx-auto px-4 py-6 ">
+      <div className="relative flex  bg-[f3f4f6] items-center gap-3  border border-input rounded-xl shadow-sm p-3 focus-within:ring-1 focus-within:ring-slate-400 focus-within:ring-offset-1 ">
         <textarea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Type your message here..."
-          className="flex-1 resize-none border-none focus-visible:outline-none text-base text-foreground placeholder-muted-foreground pr-12 min-h-[40px] max-h-[120px] overflow-y-auto"
+          placeholder="给 ChatBot 发送消息..."
+          className="flex-1 resize-none border-none focus-visible:outline-none text-base text-foreground placeholder-muted-foreground pr-12 min-h-[80px] max-h-[120px] overflow-y-auto bg-[f3f4f6]"
           rows={1}
           disabled={disabled}
         />
