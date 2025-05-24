@@ -12,10 +12,8 @@ export default function Home() {
   const [streamingContent, setStreamingContent] = useState(""); // 流式输出的内容
   const chatAreaRef = useRef(null); // 用于滚动到最新消息
 
-  const [baseUrl, setBaseUrl] = useState("https://api.chatanywhere.org");
-  const [apiKey, setApiKey] = useState(
-    "sk-8pKbA2cKOoGbRjseIoahqJfNqhLI3tchR0r2cEQ3z7q180EE"
-  );
+  const [baseUrl, setBaseUrl] = useState("");
+  const [apiKey, setApiKey] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
 
   // 从localStorage加载聊天记录 和 配置项
@@ -68,15 +66,15 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      // 从 localStorage 获取 Base URL 和 API Key
-      const baseUrl =
-        localStorage.getItem("baseUrl") || "https://api.chatanywhere.org";
-      const apiKey =
-        localStorage.getItem("apiKey") ||
-        "sk-8pKbA2cKOoGbRjseIoahqJfNqhLI3tchR0r2cEQ3z7q180EE";
+      if (!baseUrl) {
+        throw new Error("Base URL 未设置，请点击配置按钮进行设置。");
+      }
 
       if (!apiKey) {
-        throw new Error("API Key is not set. Please configure it in settings.");
+        throw new Error("API Key 未设置，请点击配置按钮进行设置。");
+      }
+      if (!selectedModel) {
+        throw new Error("模型未设置，请点击配置按钮进行设置。");
       }
 
       // 使用 fetch 发送请求，支持流式响应
@@ -87,8 +85,8 @@ export default function Home() {
           "Authorization": `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [...messages, userMessage],
+          model: selectedModel,
+          messages: [...messages, userMessage].slice(-5),
           stream: true,
         }),
       });

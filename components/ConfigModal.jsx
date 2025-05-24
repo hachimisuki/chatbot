@@ -93,11 +93,12 @@ export function ConfigModal({
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="baseURL" className="text-right">
-              baseURL
+              BaseURL
             </Label>
             <Input
               id="baseURL"
               value={baseUrl}
+              placeholder="请输入 Base URL"
               onChange={(e) => changeUrl(e.target.value)}
               className="col-span-3"
               autoFocus
@@ -113,6 +114,7 @@ export function ConfigModal({
               onChange={(e) => changeApiKey(e.target.value)}
               className="col-span-3"
               type="password"
+              placeholder="请输入 API Key"
             />
           </div>
 
