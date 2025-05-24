@@ -44,7 +44,7 @@ export function ConfigModal({
 
   // 获取模型列表
   const fetchModels = async () => {
-    if (!baseUrl || !apiKey) return;
+    if (!baseUrl) return;
 
     setIsLoading(true);
     try {
@@ -99,7 +99,12 @@ export function ConfigModal({
               id="baseURL"
               value={baseUrl}
               placeholder="请输入 Base URL"
-              onChange={(e) => changeUrl(e.target.value)}
+              onChange={(e) => {
+                changeUrl(e.target.value);
+                changeModel(""); // 清空模型选择
+                changeApiKey(""); // 清空API Key
+                setModels([]); // 清空模型列表
+              }}
               className="col-span-3"
               autoFocus
             />
@@ -124,6 +129,7 @@ export function ConfigModal({
             </Label>
             <div className="col-span-3">
               <Select
+                disabled={!baseUrl || !apiKey}
                 value={selectedModel}
                 onValueChange={changeModel}
                 onOpenChange={(open) => {
