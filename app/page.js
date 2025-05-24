@@ -4,13 +4,48 @@ import React, { useState, useEffect, useRef } from "react";
 import { Header } from "../components/Header";
 import { ChatInput } from "../components/ChatInput";
 import ChatArea from "../components/ChatArea";
-import { getFromStorage } from "../lib/storage";
+import { getFromStorage, saveToStorage } from "../lib/storage";
 
 export default function Home() {
   const [messages, setMessages] = useState([]); // 存储聊天记录
   const [isLoading, setIsLoading] = useState(false); // 加载状态
   const [streamingContent, setStreamingContent] = useState(""); // 流式输出的内容
   const chatAreaRef = useRef(null); // 用于滚动到最新消息
+
+  const [baseUrl, setBaseUrl] = useState("https://api.chatanywhere.org");
+  const [apiKey, setApiKey] = useState(
+    "sk-8pKbA2cKOoGbRjseIoahqJfNqhLI3tchR0r2cEQ3z7q180EE"
+  );
+  const [selectedModel, setSelectedModel] = useState("");
+
+  // 从localStorage加载聊天记录 和 配置项
+  useEffect(() => {
+    const savedMessages = getFromStorage("chatMessages");
+    if (savedMessages && Array.isArray(savedMessages)) {
+      setMessages(savedMessages);
+    }
+
+    const savedBaseUrl = localStorage.getItem("baseUrl");
+    const savedApiKey = localStorage.getItem("apiKey");
+    const savedSelectedModel = localStorage.getItem("selectedModel");
+
+    if (savedBaseUrl) {
+      setBaseUrl(savedBaseUrl);
+    }
+    if (savedApiKey) {
+      setApiKey(savedApiKey);
+    }
+    if (savedSelectedModel) {
+      setSelectedModel(savedSelectedModel);
+    }
+  }, []);
+
+  // 当消息更新时，保存到localStorage
+  useEffect(() => {
+    if (messages.length > 0) {
+      saveToStorage("chatMessages", messages);
+    }
+  }, [messages]);
 
   // 滚动到最新消息
   useEffect(() => {
@@ -24,16 +59,20 @@ export default function Home() {
     if (!message.trim()) return;
 
     // 添加用户消息到聊天记录
-    const userMessage = { role: "user", content: message };
+    const userMessage = {
+      role: "user",
+      content: message,
+      timestamp: Date.now(),
+    };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
     try {
       // 从 localStorage 获取 Base URL 和 API Key
       const baseUrl =
-        getFromStorage("baseUrl") || "https://api.chatanywhere.org";
+        localStorage.getItem("baseUrl") || "https://api.chatanywhere.org";
       const apiKey =
-        getFromStorage("apiKey") ||
+        localStorage.getItem("apiKey") ||
         "sk-8pKbA2cKOoGbRjseIoahqJfNqhLI3tchR0r2cEQ3z7q180EE";
 
       if (!apiKey) {
@@ -69,10 +108,13 @@ export default function Home() {
         if (done) {
           if (!isDone) {
             // 只有在未处理 [DONE] 时才添加消息
-            setMessages((prev) => [
-              ...prev,
-              { role: "assistant", content: resultContent },
-            ]);
+            const assistantMessage = {
+              role: "assistant",
+              content: resultContent,
+              timestamp: Date.now(),
+            };
+
+            setMessages((prev) => [...prev, assistantMessage]);
             setStreamingContent("");
             setIsLoading(false);
           }
@@ -86,10 +128,13 @@ export default function Home() {
           if (line.startsWith("data: ")) {
             const data = line.slice(6); // 去掉 "data: " 前缀
             if (data === "[DONE]") {
-              setMessages((prev) => [
-                ...prev,
-                { role: "assistant", content: resultContent },
-              ]);
+              const assistantMessage = {
+                role: "assistant",
+                content: resultContent,
+                timestamp: Date.now(),
+              };
+
+              setMessages((prev) => [...prev, assistantMessage]);
               setStreamingContent("");
               setIsLoading(false);
               isDone = true;
@@ -118,22 +163,49 @@ export default function Home() {
       console.error("Error sending message:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: `Error: ${error.message}` },
+        {
+          role: "assistant",
+          content: `Error: ${error.message}`,
+          timestamp: Date.now(),
+        },
       ]);
       setStreamingContent("");
       setIsLoading(false);
     }
   };
 
+  // 清除聊天记录
+  const clearMessages = () => {
+    setMessages([]);
+    saveToStorage("chatMessages", []);
+  };
+
   return (
     <div className="w-full h-screen flex flex-col bg-background">
-      <Header />
+      <Header
+        baseUrl={baseUrl}
+        apiKey={apiKey}
+        selectedModel={selectedModel}
+        changeUrl={(url) => {
+          setBaseUrl(url);
+        }}
+        changeModel={(model) => {
+          setSelectedModel(model);
+        }}
+        changeApiKey={(key) => {
+          setApiKey(key);
+        }}
+      />
       <ChatArea
         messages={messages}
         streamingContent={streamingContent}
         ref={chatAreaRef}
       />
-      <ChatInput onSend={handleSendMessage} disabled={isLoading} />
+      <ChatInput
+        onSend={handleSendMessage}
+        onClear={clearMessages}
+        disabled={isLoading}
+      />
     </div>
   );
 }

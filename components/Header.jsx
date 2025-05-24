@@ -1,18 +1,29 @@
-import { ConfigModal } from "../components/ConfigModal";
+import React from "react";
+import { ConfigModal } from "./ConfigModal";
 
-export function Header() {
+export function Header({
+  selectedModel,
+  apiKey,
+  baseUrl,
+  changeUrl,
+  changeModel,
+  changeApiKey,
+}) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-11  w-full items-center justify-between px-16">
-        {/* Left side - Logo */}
-        <div className="flex items-center space-x-2">
-          <img src="/chatgpt-logo.png" alt="ChatGPT Logo" className="h-6 w-6" />
-          <span className="font-bold">ChatBOT</span>
-        </div>
-        {/* Right side - Config button */}
-        <div className="flex items-center space-x-2">
-          <ConfigModal />
-        </div>
+    <header className="w-full h-16 bg-white border-b flex items-center justify-between px-4 sm:px-6">
+      <div className="flex items-center">
+        <h1 className="text-xl font-semibold text-gray-900">Chat App</h1>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <ConfigModal
+          selectedModel={selectedModel}
+          apiKey={apiKey}
+          baseUrl={baseUrl}
+          changeUrl={changeUrl}
+          changeModel={changeModel}
+          changeApiKey={changeApiKey}
+        />
       </div>
     </header>
   );
